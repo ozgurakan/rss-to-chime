@@ -42,16 +42,16 @@ class Post2Chime(Poster):
         parser = MyHTMLParser()
         chime = Chime(self._webhook)
 
-        content = ''
-        content += feed.title + '\n\n'
-        content += feed.published + '\n\n'
         parser.feed(feed.summary)
         summary = parser.get_text()
-        content += summary + '\n\n'
-        content += feed.link + '\n\n'
-
+        
+        content = '/md '
+        content += '**[' + feed.title + '](' + feed.link + ')**\n'
+        content += '*' + feed.published + '*\n\000\n'
+        content += summary + '\n\000\n'
+        
         if len(feed.tags) > 0:
-            content += 'category: ' + feed.tags[0]['term'] + '\n'
+            content += '*category: ' + feed.tags[0]['term'] + '* \n'
 
         try:
             chime.post(content)
